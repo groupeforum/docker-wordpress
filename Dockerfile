@@ -2,17 +2,18 @@ FROM php:5.6-apache
 
 MAINTAINER Florian Girardey <florian@girardey.net>
 
+# Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev && rm -rf /var/lib/apt/lists/* \
+RUN apt-get update && apt-get install -q -y libpng12-dev libjpeg-dev exim4 exim4-config mailutils \
+	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd
 RUN docker-php-ext-install mysqli
 
 # Install xdebug
-RUN pecl install xdebug \
-	&& echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini
+RUN pecl install xdebug
 
 # Fix permissions on all of the files
 RUN usermod -u 1000 www-data
@@ -27,9 +28,17 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 # Update the default apache site with the config we created.
 COPY apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
-# Add PHP Configuration file
-COPY php.ini /usr/local/etc/php/conf.d/wordpress.ini
+# Add PHP Configuration file for WordPress
+COPY php-wordpress.ini /usr/local/etc/php/conf.d/php-wordpress.ini
+
+# Add PHP Configuration file for SMTP
+COPY php-smtp.ini /usr/local/etc/php/conf.d/php-smtp.ini
+
+# Add the Entrypoint script
+COPY docker-entrypoint.sh /root/entrypoint.sh
+RUN chmod +x /root/entrypoint.sh
 
 VOLUME /var/www/html
 
+ENTRYPOINT ["/root/entrypoint.sh"]
 CMD ["apache2-foreground"]

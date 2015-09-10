@@ -6,7 +6,7 @@ MAINTAINER Florian Girardey <florian@girardey.net>
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -q -y libpng12-dev libjpeg-dev exim4 exim4-config mailutils \
+RUN apt-get update && apt-get install -q -y libpng12-dev libjpeg-dev exim4 mailutils \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd

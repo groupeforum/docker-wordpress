@@ -6,7 +6,6 @@ sed -i "s/dc_local_interfaces=.*/dc_local_interfaces='127.0.0.1; ::1'/" /etc/exi
 sed -i "s/dc_minimaldns=.*/dc_minimaldns='false'/" /etc/exim4/update-exim4.conf.conf
 sed -i "s/dc_use_split_config=.*/dc_use_split_config='false'/" /etc/exim4/update-exim4.conf.conf
 sed -i "s/dc_localdelivery=.*/dc_localdelivery='maildir_home'/" /etc/exim4/update-exim4.conf.conf
-sed -i "s/dc_other_hostnames=.*/dc_other_hostnames='groupeforum.net'/" /etc/exim4/update-exim4.conf.conf
 
 # Set generic mail address
 cat > /etc/email-addresses << EOF

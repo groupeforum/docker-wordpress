@@ -1,9 +1,6 @@
-FROM php:5.6-apache
+FROM php:5.6-fpm
 
 MAINTAINER Florian Girardey <florian@girardey.net>
-
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
 
 # install the PHP extensions we need
 RUN apt-get update && apt-get install -q -y libpng12-dev libjpeg-dev exim4 mailutils \
@@ -14,19 +11,6 @@ RUN docker-php-ext-install mysqli
 
 # Install xdebug
 RUN pecl install xdebug
-
-# Fix permissions on all of the files
-RUN usermod -u 1000 www-data
-
-# Setup APACHE environment variables
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
-ENV APACHE_LOCK_DIR /var/lock/apache2
-ENV APACHE_PID_FILE /var/run/apache2.pid
-
-# Update the default apache site with the config we created.
-COPY apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 # Add PHP Configuration file for WordPress
 COPY php-wordpress.ini /usr/local/etc/php/conf.d/php-wordpress.ini
@@ -41,4 +25,4 @@ RUN chmod +x /root/entrypoint.sh
 VOLUME /var/www/html
 
 ENTRYPOINT ["/root/entrypoint.sh"]
-CMD ["apache2-foreground"]
+CMD ["php-fpm"]

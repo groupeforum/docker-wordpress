@@ -25,4 +25,4 @@ RUN chmod +x /root/entrypoint.sh
 VOLUME /var/www/html
 
 ENTRYPOINT ["/root/entrypoint.sh"]
-CMD ["php-fpm"]
+CMD ["php-fpm", "-F"]

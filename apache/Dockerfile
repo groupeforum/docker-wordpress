@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -q -y libpng12-dev libjpeg-dev exim4 mailu
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd
+	&& docker-php-ext-install opcache
 RUN docker-php-ext-install mysqli
 
 # Install xdebug
@@ -27,6 +28,9 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 
 # Update the default apache site with the config we created.
 COPY apache-config.conf /etc/apache2/sites-enabled/000-default.conf
+
+# Add PHP Configuration file for OPcache
+COPY php-opcache.ini /usr/local/etc/php/conf.d/php-opcache.ini
 
 # Add PHP Configuration file for WordPress
 COPY php-wordpress.ini /usr/local/etc/php/conf.d/php-wordpress.ini

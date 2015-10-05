@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ "$APP_ENV" = 'local' ] || [ "$APP_ENV" = 'dev' ]; then
+	sed -i "s/\(opcache.validate_timestamps =.*\)/; \1/" /usr/local/etc/php/conf.d/php-opcache.ini
+fi
+
 # Set exim installation variables
 sed -i "s/dc_eximconfig_configtype=.*/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf
 sed -i "s/dc_local_interfaces=.*/dc_local_interfaces='127.0.0.1; ::1'/" /etc/exim4/update-exim4.conf.conf

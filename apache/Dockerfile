@@ -6,10 +6,11 @@ MAINTAINER Florian Girardey <florian@girardey.net>
 RUN a2enmod rewrite
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -q -y libpng12-dev libjpeg-dev exim4 mailutils \
+RUN apt-get update && apt-get install -q -y libpng12-dev libjpeg-dev libapache2-mod-xsendfile libxml2-dev exim4 mailutils \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd \
+	&& docker-php-ext-install soap \
 	&& docker-php-ext-install opcache
 RUN docker-php-ext-install mysqli
 

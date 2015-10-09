@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$APP_ENV" = 'local' ] || [ "$APP_ENV" = 'dev' ]; then
-	sed -i "s/\(opcache.validate_timestamps =.*\)/; \1/" /usr/local/etc/php/conf.d/php-opcache.ini
+	sed -i "s/opcache.enable =.*/opcache.enable = 0/" /usr/local/etc/php/conf.d/php-opcache.ini
 fi
 
 # Set exim installation variables

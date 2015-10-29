@@ -3,7 +3,7 @@ FROM php:5.6-apache
 MAINTAINER Florian Girardey <florian@girardey.net>
 
 # Enable Apache mod_rewrite
-RUN a2enmod rewrite
+RUN a2enmod rewrite && a2enmod expires
 
 # install the PHP extensions we need
 RUN apt-get update && apt-get install -q -y libpng12-dev libjpeg-dev libapache2-mod-xsendfile libxml2-dev exim4 mailutils \
